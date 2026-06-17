@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { urlConfig } from '../../config';
+import { useAppContext } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 function RegisterPage() {
     const [firstName, setFirstName] = useState("");
@@ -6,8 +9,46 @@ function RegisterPage() {
     const [email, setEmail] = useState("")
     const [password, setPassWord] = useState("");
 
+    const [showerr, setShowerr] = useState('');
+    const navigate = useNavigate();
+    const { setIsLoggedIn } = useAppContext();
+
+
     const handleRegister = async () => {
-        console.log("Register Invoked")
+        try {
+            const response = await fetch(`${urlConfig.backendUrl}/api/auth/register`, {
+                //Task 6: Set method
+                method: 'POST',
+                //Task 7: Set headers
+                headers: {
+                    'content-type': 'application/json',
+                },
+                //Task 8: Set body to send user details
+                body: JSON.stringify({
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    password: password
+                })
+            })
+
+            const json = await response.json();
+            if (json.authtoken) {
+                sessionStorage.setItem('auth-token', json.authtoken);
+                sessionStorage.setItem('name', firstName)
+                sessionStorage.setItem('email', json.email)
+
+                setIsLoggedIn(true);
+
+                navigate('/app');
+            }
+
+            if (json.error) {
+                setShowerr(json.error)
+            }
+        } catch (e) {
+            console.log("Error fetching details: " + e.message);
+        }
     }
 
     return (
@@ -40,6 +81,8 @@ function RegisterPage() {
                             <br />
                             <input type="password" id="password" className="form-control" placeholder="Enter Your Password" value={password} onChange={(e) => setPassWord(e.target.value)} />
                         </div>
+
+                        <div className="text-danger">{showerr}</div>
 
                         <button className="btn btn-primary w-100 mb-3 " onClick={handleRegister}>Register</button>
                         <p className="mt-4 text-center">
