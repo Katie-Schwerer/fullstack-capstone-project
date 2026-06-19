@@ -5,13 +5,13 @@ const cors = require('cors');
 const pinoLogger = require('./logger');
 
 const connectToDatabase = require('./models/db');
-const {loadData} = require("./util/import-mongo/index");
+const { loadData } = require("./util/import-mongo/index");
 
-const authRoutes = require('./routes/authRoutes')
+const authRoutes = require('./routes/authRoutes');
 
 
 const app = express();
-app.use("*",cors());
+app.use("*", cors());
 const port = 3060;
 
 // Connect to MongoDB; we just do this one time
@@ -52,9 +52,9 @@ app.use((err, req, res, next) => {
 
 app.use('/api/auth', authRoutes);
 
-app.get("/",(req,res)=>{
-    res.send("Inside the server")
-})
+app.get("/", (req, res) => {
+    res.send("Inside the server");
+});
 
 
 
