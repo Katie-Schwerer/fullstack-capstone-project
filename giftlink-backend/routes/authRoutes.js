@@ -1,3 +1,5 @@
+/*jshint esversion: 8 */
+
 const express = require('express');
 const app = express();
 const bcryptjs = require('bcryptjs');
@@ -55,7 +57,7 @@ router.post('/register', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-    console.log("\n\n Inside login")
+    console.log("\n\n Inside login");
 
     try {
         // const collection = await connectToDatabase();
@@ -64,7 +66,7 @@ router.post('/login', async (req, res) => {
         const theUser = await collection.findOne({ email: req.body.email });
 
         if (theUser) {
-            let result = await bcryptjs.compare(req.body.password, theUser.password)
+            let result = await bcryptjs.compare(req.body.password, theUser.password);
             if (!result) {
                 logger.error('Passwords do not match');
                 return res.status(404).json({ error: 'Wrong pasword' });
@@ -102,14 +104,14 @@ router.put('/update', async (req, res) => {
         const email = req.headers.email;
         if (!email) {
             logger.error('Email not found in the request headers');
-            return res.status(400).json({ error: "Email not found in the request headers" })
+            return res.status(400).json({ error: "Email not found in the request headers" });
         }
         // Task 3: Check if `email` is present in the header and throw an appropriate error message if not present.
         // Task 4: Connect to MongoDB
         const db = await connectToDatabase();
-        const collection = db.collection("users")
+        const collection = db.collection("users");
 
-        const existingUser = await collection.findOne({ email })
+        const existingUser = await collection.findOne({ email });
         existingUser.updatedAt = new Date();
 
         // Task 6: update user credentials in database
