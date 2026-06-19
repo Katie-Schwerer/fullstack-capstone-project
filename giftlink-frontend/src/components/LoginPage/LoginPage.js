@@ -54,6 +54,7 @@ function LoginPage() {
             setIncorrect("Wrong password. Try again.");
             setTimeout(() => {
                 setIncorrect("");
+                console.log(incorrect);
             }, 2000);
         }
 
