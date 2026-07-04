@@ -23,7 +23,7 @@ spec:
 
       containers:
         - name: giftapp-container
-          image: <the-name-of-your-image>
+          image: us.icr.io/sn-labs-katieschwere/giftapp
           ports:
             - containerPort: 3060
 
